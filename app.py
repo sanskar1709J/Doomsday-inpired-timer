@@ -17,8 +17,8 @@ default_target_time = time(0, 0)
 
 selected_date = st.sidebar.date_input("Target Date", value=default_target_date)
 selected_time = st.sidebar.time_input("Target Time", value=default_target_time)
-custom_title = st.sidebar.text_input("Footer / Sub-Text", value="THIS FILM IS NOT YET RATED")
-brand_title = st.sidebar.text_input("Brand / Label", value="MARVEL STUDIOS")
+custom_title = st.sidebar.text_input("Footer / Sub-Text", value="CLASS 10TH")
+brand_title = st.sidebar.text_input("Brand / Label", value="BOARD EXAMINATION")
 
 # Combine date and time into ISO string
 target_dt = datetime.combine(selected_date, selected_time)
