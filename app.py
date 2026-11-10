@@ -12,7 +12,7 @@ st.set_page_config(
 # Sidebar controls for changing the countdown target
 st.sidebar.header("⚙️ Timer Settings")
 
-default_target_date = date(2027, 5, 7)
+default_target_date = date(2027, 2, 15)
 default_target_time = time(0, 0)
 
 selected_date = st.sidebar.date_input("Target Date", value=default_target_date)
