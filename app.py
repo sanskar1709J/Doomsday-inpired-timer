@@ -1,16 +1,28 @@
 import streamlit as st
 import streamlit.components.v1 as components
+from datetime import datetime, date, time
 
-# Configure page
 st.set_page_config(
     page_title="Cinematic Countdown",
     page_icon="⏳",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",
 )
 
-# Target countdown date: Adjust this to any ISO-formatted target date
-TARGET_DATE = "2027-05-07T00:00:00"
+# Sidebar controls for changing the countdown target
+st.sidebar.header("⚙️ Timer Settings")
+
+default_target_date = date(2027, 5, 7)
+default_target_time = time(0, 0)
+
+selected_date = st.sidebar.date_input("Target Date", value=default_target_date)
+selected_time = st.sidebar.time_input("Target Time", value=default_target_time)
+custom_title = st.sidebar.text_input("Footer / Sub-Text", value="THIS FILM IS NOT YET RATED")
+brand_title = st.sidebar.text_input("Brand / Label", value="MARVEL STUDIOS")
+
+# Combine date and time into ISO string
+target_dt = datetime.combine(selected_date, selected_time)
+target_iso = target_dt.strftime("%Y-%m-%dT%H:%M:%S")
 
 countdown_html = f"""
 <!DOCTYPE html>
@@ -20,7 +32,6 @@ countdown_html = f"""
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
-
   <style>
     * {{
       box-sizing: border-box;
@@ -41,7 +52,6 @@ countdown_html = f"""
       position: relative;
     }}
 
-    /* Subtle cinematic glow and scanline effect */
     body::before {{
       content: "";
       position: absolute;
@@ -155,13 +165,13 @@ countdown_html = f"""
     </div>
 
     <div class="sub-footer">
-      <span class="rating-box">THIS FILM IS NOT YET RATED</span>
-      <span>MARVEL STUDIOS</span>
+      <span class="rating-box">{custom_title}</span>
+      <span>{brand_title}</span>
     </div>
   </div>
 
   <script>
-    const target = new Date("{TARGET_DATE}").getTime();
+    const target = new Date("{target_iso}").getTime();
 
     function pad(num) {{
       return String(Math.floor(num)).padStart(2, '0');
@@ -184,7 +194,7 @@ countdown_html = f"""
       const min = sec * 60;
       const hr = min * 60;
       const day = hr * 24;
-      const month = day * 30.4375; // Average days per month
+      const month = day * 30.4375;
 
       const months = Math.floor(diff / month);
       diff -= months * month;
@@ -214,5 +224,4 @@ countdown_html = f"""
 </html>
 """
 
-# Render full viewport iframe
 components.html(countdown_html, height=750, scrolling=False)
